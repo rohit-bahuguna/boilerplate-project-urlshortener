@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 var mongoose = require('mongoose');
 // Basic Configuration
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 app.use(cors());
 
@@ -38,7 +38,7 @@ let Url = mongoose.model('Url', urlSchema)
 
 let bodyParser = require('body-parser')
 let responseObject = {}
-app.post('/api/shorturl/new', bodyParser.urlencoded({ extended: false }) , (request, response) => {
+app.post('/api/shorturl/', bodyParser.urlencoded({ extended: false }) , (request, response) => {
   let inputUrl = request.body['url']
   
   let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)
@@ -47,7 +47,10 @@ app.post('/api/shorturl/new', bodyParser.urlencoded({ extended: false }) , (requ
     response.json({error: 'Invalid URL'})
     return
   }
-  if(inputUrl === 'http://www.example.com'){
+
+  let arr = inputUrl.split(':')
+  console.log(arr)
+  if(!(arr[0].includes("s"))){
     response.json({error: 'Invalid URL'})
     return
   }
